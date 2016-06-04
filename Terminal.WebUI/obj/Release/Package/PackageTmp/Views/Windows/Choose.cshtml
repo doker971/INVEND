@@ -1,0 +1,62 @@
+﻿@model int?
+@{
+    ViewBag.Title = "Window " + Model;
+}
+<script src="~/signalr/hubs"></script>
+<script>
+    $(function () {
+        var terminal = $.connection.terminalHub;
+
+        terminal.client.getQueue = function (count, list) {
+            var lst = JSON.parse(list);
+            console.log(lst);
+
+            $("#full_count").empty();
+            $("#full_count").append("<p>Кол-во в очереди: " + count + "</p>");
+
+            $("#test").empty();
+            $.each(lst, function (key, value) {
+                $("#test").append("<option value='" + value.Number + "'>" + value.Number + "</option><br />");
+            });
+        }
+
+        terminal.client.onNewCurTicket = function (number) {
+            $("#current_number").empty();
+            $("#current_number").append("<p>Номер вызванного талона: "+ number +"</p>")
+        }
+
+        terminal.client.noTicket = function (){
+            $("#current_number").empty();
+            $("#current_number").append("<p>Номер вызванного талона: - </p>")
+        }
+
+        $.connection.hub.start().done(function () {
+            terminal.server.operatorConnect(@Model);
+
+            $('#from_list').click(function () {
+                terminal.server.selectFromList($("#test").val(),@Model);
+            });
+
+            $("#next").click(function(){
+                terminal.server.selectNext(@Model);
+            });
+
+            $("#close_current").click(function(){
+                terminal.server.closeTicket(@Model);
+            })
+        });
+    });
+</script>
+<h2>Window @Model</h2>
+
+<div id="full_count">
+    <p>Кол-во в очереди: 0</p>
+</div>
+<div id="current_number">
+    <p>Номер вызванного талона: -</p>
+</div>
+<button class="btn btn-danger" id="close_current">Завершить текущий талон</button>
+<button class="btn btn-success" id="next">Вызвать следующего</button>
+<button class="btn btn-warning" id="from_list">Вызвать из списка</button>
+<select id="test"></select>
+

@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Terminal";
+}
+
+<div class="jumbotron">
+    <h1>Terminal</h1>
+    <p class="lead">Электронная очередь для INVEND</p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Терминал</h2>
+        <p>Тут вы можете распечатать талон</p>
+        <p>@Html.ActionLink("Перейти..", "Index", "Terminal", null, new { @class = "btn btn-default" })</p>
+    </div>
+    <div class="col-md-4">
+        <h2>Оператор</h2>
+        <p>Выберите одно из двух окон и работайте с талонами!</p>
+        <p>@Html.ActionLink("Перейти..", "Index", "Windows", null, new { @class = "btn btn-default" })</p>
+    </div>
+    <div class="col-md-4">
+        <h2>Табло</h2>
+        <p>После выбора талона, ожидайте здесь</p>
+        <p>@Html.ActionLink("Перейти..", "Index", "Display", null, new { @class = "btn btn-default" })</p>
+    </div>
+</div>

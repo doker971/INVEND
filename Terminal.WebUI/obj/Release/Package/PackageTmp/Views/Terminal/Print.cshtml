@@ -1,0 +1,15 @@
+﻿@model int
+@{
+    ViewBag.Title = "Print";
+    Layout = null;
+}
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script>
+    $(window).ready(function () {
+        window.print();
+    });
+</script>
+
+<p>Ваш номер: @Model</p>
+

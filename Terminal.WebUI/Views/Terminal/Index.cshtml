@@ -1,0 +1,29 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/signalr/hubs"></script>
+<script>
+    $(function () {
+        var terminal = $.connection.terminalHub;
+
+        terminal.client.printNewTicket = function (number) {
+            $("#number").attr("value", number);
+            $("#print_submit").trigger("click");
+        };
+
+        $.connection.hub.start().done(function () {
+
+            $('#suc_btn').click(function () {
+                terminal.server.addTicket();
+            });
+        });
+    });
+</script>
+<div>
+    <button class="btn btn-success" id="suc_btn">Получить талон</button>
+    @using (Html.BeginForm("Print", "Terminal", FormMethod.Post, new { @class = "hidden", id = "print_form" }))
+    {
+        <input type="text" name="number" id="number" value="" />
+        <input type="submit" formtarget="_blank" id="print_submit" />
+    }
+</div>

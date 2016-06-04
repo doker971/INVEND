@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+<script src="~/signalr/hubs"></script>
+<script>
+$(function () {
+    var terminal = $.connection.terminalHub;
+
+    terminal.client.onNewCall = function (number, window) {
+        $(".display_cont").append("<p id='"+ number +"'>" + number + " -> Окно " + window + "</p>");
+    }
+
+    terminal.client.onCloseCall = function (number) {
+        $("#"+number).remove();
+    }
+
+    $.connection.hub.start().done(function () {
+        terminal.server.displayConnect();
+    });
+});
+</script>
+
+<h2>Display</h2>
+
+<div class="display_cont"></div>
+
